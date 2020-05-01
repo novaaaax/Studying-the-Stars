@@ -4,6 +4,7 @@ body {
 
 .jumbotron {
     background-color: rgba(0, 0, 0, 0.0001);
+    text-align: center;
 }
 
 .parentstars {
