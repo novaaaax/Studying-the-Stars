@@ -1,3 +1,4 @@
+// javascript for background
 function manyStars() {
     var universe = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -65,3 +66,15 @@ function manyStars3() {
 }
 
 manyStars3();
+
+
+// javascript for navbar
+function scrollCheck(){
+    window.onscroll = function(){
+        var nav = document.getElementById('navbar')
+        nav.setAttribute('class', 'navbar fixed-top navbar-expand-lg navbar-light bg-light')
+    }
+}
+
+
+scrollCheck();
