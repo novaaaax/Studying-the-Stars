@@ -75,24 +75,92 @@ function startPrompt() {
     inquirer.prompt([
         {
             name: 'menuChoices',
-            message: 'Determine star class by RGB or B-V Index?',
+            message: 'What would you like to do?',
             type: 'list',
             choices: [
-                'RBG',
-                'B-V Index',
+                'Add star to database',
+                'Determine star classification',
+                'View database',
                 'Exit'
             ]
         }
     ]).then(function (menuAnswers) {
-        if (menuAnswers.menuChoices === 'RGB') {
-            startRGB();
-        } else if (menuAnswers.menuChoices === 'B-V Index') {
-            startBV();
+        if (menuAnswers.menuChoices === 'Add star to database') {
+            startDB();
+        } else if (menuAnswers.menuChoices === 'Determine star classification') {
+            startClass();
+        } else if (menuAnswers.menuChoices === 'View database') {
+            viewDatabase();
         } else {
             connection.end();
         }
     })
 };
+
+function startDB() {
+    inquirer.prompt([
+        {
+            name: 'title',
+            type: 'input',
+            message: 'Please enter name:'
+        },
+        {
+            name: 'date',
+            type: 'input',
+            message: 'Please enter date found:'
+        },
+        {
+            name: 'time',
+            type: 'input',
+            message: 'Please enter time found:'
+        },
+        {
+            name: 'coordinates',
+            type: 'input',
+            message: 'Please enter coordinates:'
+        },
+        {
+            name: 'color',
+            type: 'input',
+            message: 'Please enter color (scale of your choice):'
+        },
+        {
+            name: 'category',
+            type: 'input',
+            message: "Please enter type/classification:"
+        }
+    ]).then(function (starAnswers) {
+        var star = starAnswers.title;
+        var found = starAnswers.date;
+        var found2 = starAnswers.time;
+        var coord = starAnswers.coordinates;
+        var shade = starAnswers.color;
+        var classification = starAnswers.category;
+
+        connection.query(`INSERT INTO star(name, date, time, coordinates, color, type) VALUES('${star}', '${found}', '${found2}', '${coord}', '${shade}', '${classification}')`,
+        function(err, data) {
+            if(err){
+                throw err;
+            }
+            console.log(`${star} was added successfully!`);
+
+            startPrompt();
+        })
+    })
+}
+
+function viewDatabase() {
+    connection.query('SELECT * FROM star',
+    function(err, rows){
+        if(err){
+            throw err;
+        };
+        rows.forEach(function(row){
+            console.table(`Name: ${row.name} Date Found: ${row.date} Time Found: ${row.time} Coordinates: ${row.coordinates} Color: ${row.color} Classification: ${row.type}`)
+        });
+        startPrompt();
+    })
+}
 
 // function startRGB() {
 //     inquirer.prompt([
@@ -104,16 +172,16 @@ function startPrompt() {
 //     ])
 // }
 
-function startBV() {
-    inquirer.prompt([
-        {
-            name: 'bvIndex',
-            meassage: 'Input B-V Index',
-            type: 'input'
-        }
-    ]).then(function (userIndex) {
-        var userInput = userIndex.bvIndex;
-        const output = network.run([userInput])
-        console.log(`Probability: ${output}`);
-    })
-}
+// function startBV() {
+//     inquirer.prompt([
+//         {
+//             name: 'bvIndex',
+//             meassage: 'Input B-V Index',
+//             type: 'input'
+//         }
+//     ]).then(function (userIndex) {
+//         var userInput = userIndex.bvIndex;
+//         const output = network.run([userInput])
+//         console.log(`Probability: ${output}`);
+//     })
+// }

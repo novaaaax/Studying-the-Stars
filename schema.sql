@@ -4,6 +4,7 @@ USE starmap_db;
 
 CREATE TABLE star (
     id INT(10) AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(80) NOT NULL,
     date VARCHAR(80) NOT NULL,
     time VARCHAR(80) NOT NULL,
     coordinates VARCHAR(80) NOT NULL,
