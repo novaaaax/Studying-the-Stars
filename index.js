@@ -26,7 +26,7 @@ const rgbNetwork = new brain.NeuralNetwork();
 const bvNetwork = new brain.NeuralNetwork();
 
 // rgb color
-// network.train([
+// rgbNetwork.train([
 //     { input: [157, 180, 255], output: [0, 0, 0, 0, 0, 0, 1] }, // O
 //     { input: [], output: [0, 0, 0, 0, 0, 0, 1] },
 //     { input: [162, 185, 255], output: [0, 0, 0, 0, 0, 1, 0] }, // B
@@ -172,6 +172,34 @@ function startClass() {
     })
 }
 
+function startRGB() {
+    inquirer.prompt([
+        {
+            name: 'RGB',
+            message: 'Input RGB:',
+            type: 'input'
+        }
+    ]).then(function(userIndex){
+        var userInput = userIndex.RGB;
+        var output = rgbNetwork.run([userInput]);
+        console.log(`Probability: ${output}`);
+    })
+}
+
+function startBV() {
+    inquirer.prompt([
+        {
+            name: 'bvIndex',
+            meassage: 'Input B-V Index:',
+            type: 'input'
+        }
+    ]).then(function (userIndex) {
+        var userInput = userIndex.bvIndex;
+        var output = bvNetwork.run([userInput])
+        console.log(`Probability: ${output}`);
+    })
+}
+
 function viewDatabase() {
     connection.query('SELECT * FROM star',
         function (err, rows) {
@@ -184,27 +212,3 @@ function viewDatabase() {
             startPrompt();
         })
 }
-
-// function startRGB() {
-//     inquirer.prompt([
-//         {
-//             name: 'RGB',
-//             message: 'Input RGB:',
-//             type: 'input'
-//         }
-//     ])
-// }
-
-// function startBV() {
-//     inquirer.prompt([
-//         {
-//             name: 'bvIndex',
-//             meassage: 'Input B-V Index',
-//             type: 'input'
-//         }
-//     ]).then(function (userIndex) {
-//         var userInput = userIndex.bvIndex;
-//         const output = network.run([userInput])
-//         console.log(`Probability: ${output}`);
-//     })
-// }
