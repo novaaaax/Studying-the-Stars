@@ -25,6 +25,7 @@ connection.connect(function (err) {
 
 const network = new brain.NeuralNetwork();
 
+// rgb
 // network.train([
 //     { input: [157, 180, 255], output: [0, 0, 0, 0, 0, 0, 1] }, // O
 //     { input: [], output: [0, 0, 0, 0, 0, 0, 1] },
@@ -50,6 +51,7 @@ const network = new brain.NeuralNetwork();
 //     { input: [255, 187, 123], output: [1, 0, 0, 0, 0, 0, 0] }
 // ])
 
+//bv index
 network.train([
     { input: [0.03], output: [0, 0, 0, 0, 0, 0, 1] }, // type O 
     { input: [-0.2], output: [0, 0, 0, 0, 0, 0, 1] },
