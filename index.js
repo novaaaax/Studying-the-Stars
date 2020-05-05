@@ -12,6 +12,15 @@ const connection = mysql.createConnection({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME
 });
+connection.connect(function (err) {
+    if (err) {
+        console.log(`error connection: ${err.stack}`);
+        return;
+    }
+    console.log(`connected as id: ${connection.threadId}`);
+
+    startPrompt();
+})
 
 
 const network = new brain.NeuralNetwork();
@@ -47,29 +56,62 @@ network.train([
     { input: [0.19], output: [0, 0, 0, 0, 0, 0, 1] },
     { input: [-0.13], output: [0, 0, 0, 0, 0, 0, 1] }
 ])
-const output = network.run([-0.89])
-console.log(`Probability: ${output}`);
+// const output = network.run([-0.89])
+// console.log(`Probability: ${output}`);
 
 // var bvInputBtn = document.getElementById('bvInputBtn');
 // bvInput.onsubmit = function () {
 //     var bvInput = document.getElementById('bvInput');
-    
+
 // }
 
 // var rgbInputBtn = document.getElementById('rgbInputBtn');
 // rgbInput.onsubmit = function () {
 
 // }
-inquirer.prompt([
-    {
-        name: 'menuChoices',
-        message: 'Determine star class by RGB or B-V Index?',
-        type: 'list',
-        choices: [
-            'RBG',
-            'B-V Index'
-        ]
-    }
-]).then(function(menuAnswers){
-    if(menuAnswers.menuChoices === )
-})
+function startPrompt() {
+    inquirer.prompt([
+        {
+            name: 'menuChoices',
+            message: 'Determine star class by RGB or B-V Index?',
+            type: 'list',
+            choices: [
+                'RBG',
+                'B-V Index',
+                'Exit'
+            ]
+        }
+    ]).then(function (menuAnswers) {
+        if (menuAnswers.menuChoices === 'RGB') {
+            startRGB();
+        } else if (menuAnswers.menuChoices === 'B-V Index') {
+            startBV();
+        } else {
+            connection.end();
+        }
+    })
+};
+
+// function startRGB() {
+//     inquirer.prompt([
+//         {
+//             name: 'RGB',
+//             message: 'Input RGB:',
+//             type: 'input'
+//         }
+//     ])
+// }
+
+function startBV() {
+    inquirer.prompt([
+        {
+            name: 'bvIndex',
+            meassage: 'Input B-V Index',
+            type: 'input'
+        }
+    ]).then(function (userIndex) {
+        var userInput = userIndex.bvIndex;
+        const output = network.run([userInput])
+        console.log(`Probability: ${output}`);
+    })
+}
