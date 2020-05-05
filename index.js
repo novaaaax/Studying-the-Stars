@@ -22,10 +22,10 @@ connection.connect(function (err) {
     startPrompt();
 })
 
+const rgbNetwork = new brain.NeuralNetwork();
+const bvNetwork = new brain.NeuralNetwork();
 
-const network = new brain.NeuralNetwork();
-
-// rgb
+// rgb color
 // network.train([
 //     { input: [157, 180, 255], output: [0, 0, 0, 0, 0, 0, 1] }, // O
 //     { input: [], output: [0, 0, 0, 0, 0, 0, 1] },
@@ -51,8 +51,8 @@ const network = new brain.NeuralNetwork();
 //     { input: [255, 187, 123], output: [1, 0, 0, 0, 0, 0, 0] }
 // ])
 
-//bv index
-network.train([
+//bv index (color)
+bvNetwork.train([
     { input: [0.03], output: [0, 0, 0, 0, 0, 0, 1] }, // type O 
     { input: [-0.2], output: [0, 0, 0, 0, 0, 0, 1] },
     { input: [0.19], output: [0, 0, 0, 0, 0, 0, 1] },
@@ -138,28 +138,51 @@ function startDB() {
         var classification = starAnswers.category;
 
         connection.query(`INSERT INTO star(name, date, time, coordinates, color, type) VALUES('${star}', '${found}', '${found2}', '${coord}', '${shade}', '${classification}')`,
-        function(err, data) {
-            if(err){
-                throw err;
-            }
-            console.log(`${star} was added successfully!`);
+            function (err, data) {
+                if (err) {
+                    throw err;
+                }
+                console.log(`${star} was added successfully!`);
 
+                startPrompt();
+            })
+    })
+}
+
+function startClass() {
+    inquirer.prompt([
+        {
+            name: 'twoScales',
+            message: 'Will you use RGB or B-V Index?',
+            type: 'list',
+            choices: [
+                'RGB',
+                'B-V Index',
+                'Main Menu'
+            ]
+        }
+    ]).then(function (menu) {
+        if (menu.twoScales === 'RGB') {
+            startRGB();
+        } else if (menu.twoScales === 'B-V Index') {
+            startBV();
+        } else {
             startPrompt();
-        })
+        }
     })
 }
 
 function viewDatabase() {
     connection.query('SELECT * FROM star',
-    function(err, rows){
-        if(err){
-            throw err;
-        };
-        rows.forEach(function(row){
-            console.table(`Name: ${row.name} Date Found: ${row.date} Time Found: ${row.time} Coordinates: ${row.coordinates} Color: ${row.color} Classification: ${row.type}`)
-        });
-        startPrompt();
-    })
+        function (err, rows) {
+            if (err) {
+                throw err;
+            };
+            rows.forEach(function (row) {
+                console.table(`Name: ${row.name} Date Found: ${row.date} Time Found: ${row.time} Coordinates: ${row.coordinates} Color: ${row.color} Classification: ${row.type}`)
+            });
+            startPrompt();
+        })
 }
 
 // function startRGB() {
