@@ -1,0 +1,12 @@
+DROP DATABASE IF EXISTS starmap_db;
+CREATE DATABASE starmap_db;
+USE starmap_db;
+
+CREATE TABLE star (
+    id INT(10) AUTO_INCREMENT PRIMARY KEY,
+    date VARCHAR(80) NOT NULL,
+    time VARCHAR(80) NOT NULL,
+    coordinates VARCHAR(80) NOT NULL,
+    color VARCHAR(80) NOT NULL,
+    type VARCHAR(80) NOT NULL
+)

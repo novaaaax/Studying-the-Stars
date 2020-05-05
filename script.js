@@ -16,7 +16,6 @@ function manyStars() {
         star.appendChild(newElement);
     }
 
-
     for (let i = 0; i < universe.length; i++) {
         var star = document.getElementById('star3');
         var newElement = document.createElement('div');
@@ -66,7 +65,6 @@ function manyStars3() {
 }
 
 manyStars3();
-
 
 // javascript for navbar
 function scrollCheck(){

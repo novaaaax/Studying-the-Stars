@@ -1,4 +1,18 @@
 const brain = require('brain.js');
+const inquirer = require('inquirer');
+const mysql = require('mysql');
+require('dotenv').config();
+
+//creating mysql connection to save data
+// still have to make connection
+const PORT = process.env.PORT || 8080;
+const connection = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
+});
+
 
 const network = new brain.NeuralNetwork();
 
@@ -33,6 +47,29 @@ network.train([
     { input: [0.19], output: [0, 0, 0, 0, 0, 0, 1] },
     { input: [-0.13], output: [0, 0, 0, 0, 0, 0, 1] }
 ])
-
 const output = network.run([-0.89])
-console.log(`Probability: ${output}`)
+console.log(`Probability: ${output}`);
+
+// var bvInputBtn = document.getElementById('bvInputBtn');
+// bvInput.onsubmit = function () {
+//     var bvInput = document.getElementById('bvInput');
+    
+// }
+
+// var rgbInputBtn = document.getElementById('rgbInputBtn');
+// rgbInput.onsubmit = function () {
+
+// }
+inquirer.prompt([
+    {
+        name: 'menuChoices',
+        message: 'Determine star class by RGB or B-V Index?',
+        type: 'list',
+        choices: [
+            'RBG',
+            'B-V Index'
+        ]
+    }
+]).then(function(menuAnswers){
+    if(menuAnswers.menuChoices === )
+})

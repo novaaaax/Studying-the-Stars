@@ -7,6 +7,15 @@ body {
     text-align: center;
 }
 
+.bv {
+    margin-left: 5px;
+}
+
+.rgb {
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
 .parentstars {
     background-color: white;
     height: 20px;

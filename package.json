@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/novaaaax/background#readme",
   "dependencies": {
-    "brain.js": "^2.0.0-alpha.12"
+    "brain.js": "^2.0.0-alpha.12",
+    "dotenv": "^8.2.0",
+    "inquirer": "^7.1.0",
+    "mysql": "^2.18.1"
   }
 }
